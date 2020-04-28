@@ -19,7 +19,7 @@ I thought.
 ```
  */
 
-import {shortTimecode} from '../../timecode-converter/index.js';
+import { shortTimecode } from '../../timecode-converter/index.js';
 import { Node } from 'slate';
 const slateToText = ({value, speakers, timecodes, atlasFormat}) => {
     return (
