@@ -2,7 +2,7 @@
   "name": "slate-transcript-editor",
   "version": "0.1.0",
   "description": "A React component to make correcting automated transcriptions of audio and video easier and faster. Using the Slate Editor",
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run storybook",
