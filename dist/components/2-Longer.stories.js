@@ -9,7 +9,7 @@ const DEMO_MEDIA_URL_ZUCK_5HOURS = 'https://democratic-presidential-debate-stt-a
 const DEMO_TITLE_ZUCK_2HOURS = ' 2 Hours |Facebook CEO Mark Zuckerberg | full testimony before U.S. Senate ';
 import DEMO_TRANSCRIPT_ZUCK_2HOURS_DPE from '../sample-data/Facebook-CEO-Mark-Zuckerberg-FULL-testimony-before-U.S.senate-pXq-5L2ghhg.mp4.dpe-2hours.json';
 export const Hours2 = () => {
-  return React.createElement(SlateTranscriptEditor, {
+  return /*#__PURE__*/React.createElement(SlateTranscriptEditor, {
     mediaUrl: DEMO_MEDIA_URL_ZUCK_5HOURS,
     title: DEMO_TITLE_ZUCK_2HOURS,
     transcriptData: DEMO_TRANSCRIPT_ZUCK_2HOURS_DPE,
@@ -21,7 +21,7 @@ export const Hours2 = () => {
 const DEMO_TITLE_ZUCK_5HOURS = ' 5 Hours | Facebook CEO Mark Zuckerberg  | full testimony before U.S. Senate';
 import DEMO_TRANSCRIPT_ZUCK_5HOURS_DPE from '../sample-data/Facebook-CEO-Mark-Zuckerberg-FULL-testimony-before-U.S.senate-pXq-5L2ghhg.mp4.dpe.json';
 export const Hours5 = () => {
-  return React.createElement(SlateTranscriptEditor, {
+  return /*#__PURE__*/React.createElement(SlateTranscriptEditor, {
     mediaUrl: DEMO_MEDIA_URL_ZUCK_5HOURS,
     title: DEMO_TITLE_ZUCK_5HOURS,
     transcriptData: DEMO_TRANSCRIPT_ZUCK_5HOURS_DPE,

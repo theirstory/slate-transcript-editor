@@ -17,11 +17,11 @@ const SlateSimpleEditor = () => {
       text: 'A line of text in a paragraph.'
     }]
   }]);
-  return React.createElement(Slate, {
+  return /*#__PURE__*/React.createElement(Slate, {
     editor: editor,
     value: value,
     onChange: value => setValue(value)
-  }, React.createElement(Editable, null));
+  }, /*#__PURE__*/React.createElement(Editable, null));
 };
 
-export const SlateSimpleDemo = () => React.createElement(SlateSimpleEditor, null);
+export const SlateSimpleDemo = () => /*#__PURE__*/React.createElement(SlateSimpleEditor, null);
