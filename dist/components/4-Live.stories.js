@@ -39,7 +39,7 @@ const Example = props => {
     };
   };
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, React.createElement(SlateTranscriptEditor, {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(SlateTranscriptEditor, {
     mediaUrl: text('mediaUrl', DEMO_MEDIA_URL_SOLEIO),
     handleSaveEditor: action('handleSaveEditor'),
     handleAutoSaveChanges: action('handleAutoSaveChanges') // https://www.npmjs.com/package/@storybook/addon-knobs#select
@@ -57,14 +57,14 @@ const Example = props => {
 };
 
 export const NotEditable = () => {
-  return React.createElement(Example, {
+  return /*#__PURE__*/React.createElement(Example, {
     isEditable: false,
     transcriptInParts: DEMO_SOLEIO_LIVE,
     title: 'Simulated a live STT interim results via a timer and segmented STT json, NOT editable'
   });
 };
 export const Editable = () => {
-  return React.createElement(Example, {
+  return /*#__PURE__*/React.createElement(Example, {
     isEditable: true,
     transcriptInParts: DEMO_SOLEIO_LIVE,
     title: 'Simulated a live STT interim results via a timer and segmented STT json, editable'

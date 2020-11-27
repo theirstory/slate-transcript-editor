@@ -26,7 +26,7 @@ const DEMO_MEDIA_URL_SOLEIO = 'https://digital-paper-edit-demo.s3.eu-west-2.amaz
 const DEMO_TITLE_SOLEIO = 'Soleio Interview, PBS Frontline';
 import DEMO_SOLEIO from '../sample-data/soleio-dpe.json';
 export const demo = () => {
-  return React.createElement(SlateTranscriptEditor, {
+  return /*#__PURE__*/React.createElement(SlateTranscriptEditor, {
     mediaUrl: text('mediaUrl', DEMO_MEDIA_URL_SOLEIO),
     handleSaveEditor: action('handleSaveEditor'),
     handleAutoSaveChanges: action('handleAutoSaveChanges') // https://www.npmjs.com/package/@storybook/addon-knobs#select
@@ -38,7 +38,7 @@ export const demo = () => {
   });
 };
 export const MinimamlInitialization = () => {
-  return React.createElement(SlateTranscriptEditor, {
+  return /*#__PURE__*/React.createElement(SlateTranscriptEditor, {
     mediaUrl: text('mediaUrl', DEMO_MEDIA_URL_SOLEIO),
     transcriptData: DEMO_SOLEIO,
     handleSaveEditor: action('handleSaveEditor') // optional
@@ -52,7 +52,7 @@ MinimamlInitialization.story = {
   }
 };
 export const OptionalTitle = () => {
-  return React.createElement(SlateTranscriptEditor, {
+  return /*#__PURE__*/React.createElement(SlateTranscriptEditor, {
     showTitle: boolean('showTitle', true) // optional - defaults to false
     ,
     mediaUrl: text('mediaUrl', DEMO_MEDIA_URL_SOLEIO),
@@ -67,7 +67,7 @@ export const OptionalTitle = () => {
   });
 };
 export const NoSpeakers = () => {
-  return React.createElement(SlateTranscriptEditor, {
+  return /*#__PURE__*/React.createElement(SlateTranscriptEditor, {
     showTitle: boolean('showTitle', false),
     mediaUrl: text('mediaUrl', DEMO_MEDIA_URL_SOLEIO),
     title: text('title', DEMO_TITLE_SOLEIO),
@@ -81,7 +81,7 @@ export const NoSpeakers = () => {
   });
 };
 export const NoTimecodes = () => {
-  return React.createElement(SlateTranscriptEditor, {
+  return /*#__PURE__*/React.createElement(SlateTranscriptEditor, {
     mediaUrl: text('mediaUrl', DEMO_MEDIA_URL_SOLEIO),
     title: text('title', DEMO_TITLE_SOLEIO),
     transcriptData: DEMO_SOLEIO,
@@ -94,7 +94,7 @@ export const NoTimecodes = () => {
   });
 };
 export const NoSpeakersAndTimecodes = () => {
-  return React.createElement(SlateTranscriptEditor, {
+  return /*#__PURE__*/React.createElement(SlateTranscriptEditor, {
     mediaUrl: text('mediaUrl', DEMO_MEDIA_URL_SOLEIO),
     title: DEMO_TITLE_SOLEIO,
     transcriptData: DEMO_SOLEIO,
@@ -107,7 +107,7 @@ export const NoSpeakersAndTimecodes = () => {
   });
 };
 export const ReadOnly = () => {
-  return React.createElement(SlateTranscriptEditor, {
+  return /*#__PURE__*/React.createElement(SlateTranscriptEditor, {
     mediaUrl: text('mediaUrl', DEMO_MEDIA_URL_SOLEIO),
     title: DEMO_TITLE_SOLEIO,
     transcriptData: DEMO_SOLEIO,
@@ -119,7 +119,7 @@ export const ReadOnly = () => {
   });
 };
 export const Audio = () => {
-  return React.createElement(SlateTranscriptEditor, {
+  return /*#__PURE__*/React.createElement(SlateTranscriptEditor, {
     mediaUrl: text('mediaUrl', AUDIO_URL),
     transcriptData: DEMO_SOLEIO,
     handleSaveEditor: action('handleSaveEditor'),

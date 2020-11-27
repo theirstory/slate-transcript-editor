@@ -39,7 +39,7 @@ const PAUSE_WHILTE_TYPING_TIMEOUT_MILLISECONDS = 1500;
 const MAX_DURATION_FOR_PERFORMANCE_OPTIMIZATION_IN_SECONDS = 3600;
 const TOOTLIP_DELAY = 1000;
 const TOOTLIP_LONGER_DELAY = 2000;
-const mediaRef = React.createRef();
+const mediaRef = /*#__PURE__*/React.createRef();
 
 function isEmpty(obj) {
   return Object.keys(obj).length === 0;
@@ -145,10 +145,10 @@ export default function SlateTranscriptEditor(props) {
   const renderElement = useCallback(props => {
     switch (props.element.type) {
       case 'timedText':
-        return React.createElement(TimedTextElement, props);
+        return /*#__PURE__*/React.createElement(TimedTextElement, props);
 
       default:
-        return React.createElement(DefaultElement, props);
+        return /*#__PURE__*/React.createElement(DefaultElement, props);
     }
   }, []);
   const renderLeaf = useCallback(({
@@ -156,7 +156,7 @@ export default function SlateTranscriptEditor(props) {
     children,
     leaf
   }) => {
-    return React.createElement("span", _extends({
+    return /*#__PURE__*/React.createElement("span", _extends({
       onDoubleClick: handleTimedTextClick,
       className: 'timecode text',
       "data-start": children.props.parent.start,
@@ -220,7 +220,7 @@ export default function SlateTranscriptEditor(props) {
       textXl = 7;
     }
 
-    return React.createElement(Row, props.attributes, showTimecodes && React.createElement(Col, {
+    return /*#__PURE__*/React.createElement(Row, props.attributes, showTimecodes && /*#__PURE__*/React.createElement(Col, {
       contentEditable: false,
       xs: 4,
       sm: 2,
@@ -228,7 +228,7 @@ export default function SlateTranscriptEditor(props) {
       lg: 3,
       xl: 2,
       className: 'p-t-2 text-truncate'
-    }, React.createElement("code", {
+    }, /*#__PURE__*/React.createElement("code", {
       contentEditable: false,
       style: {
         cursor: 'pointer'
@@ -237,7 +237,7 @@ export default function SlateTranscriptEditor(props) {
       onClick: handleTimedTextClick,
       title: props.element.startTimecode,
       "data-start": props.element.start
-    }, props.element.startTimecode)), showSpeakers && React.createElement(Col, {
+    }, props.element.startTimecode)), showSpeakers && /*#__PURE__*/React.createElement(Col, {
       contentEditable: false,
       xs: 8,
       sm: 10,
@@ -245,7 +245,7 @@ export default function SlateTranscriptEditor(props) {
       lg: 3,
       xl: 3,
       className: 'p-t-2 text-truncate'
-    }, React.createElement("span", {
+    }, /*#__PURE__*/React.createElement("span", {
       contentEditable: false,
       className: 'text-truncate text-muted unselectable',
       style: {
@@ -254,7 +254,7 @@ export default function SlateTranscriptEditor(props) {
       },
       title: props.element.speaker.toUpperCase(),
       onClick: handleSetSpeakerName.bind(this, props.element)
-    }, ' ', props.element.speaker.toUpperCase())), React.createElement(Col, {
+    }, ' ', props.element.speaker.toUpperCase())), /*#__PURE__*/React.createElement(Col, {
       xs: 12,
       sm: 12,
       md: 12,
@@ -265,7 +265,7 @@ export default function SlateTranscriptEditor(props) {
   };
 
   const DefaultElement = props => {
-    return React.createElement("p", props.attributes, props.children);
+    return /*#__PURE__*/React.createElement("p", props.attributes, props.children);
   };
 
   const handleTimedTextClick = e => {
@@ -475,21 +475,21 @@ export default function SlateTranscriptEditor(props) {
     return tmpMediaType;
   };
 
-  return React.createElement(Container, {
+  return /*#__PURE__*/React.createElement(Container, {
     fluid: true,
     style: {
       backgroundColor: '#eee',
       height: '100vh',
       paddingTop: '1em'
     }
-  }, React.createElement("style", {
+  }, /*#__PURE__*/React.createElement("style", {
     scoped: true
   }, `
               /* Next words */
               .timecode[data-previous-timings*="${mediaRef && mediaRef.current && mediaRef.current.duration && generatePreviousTimingsUpToCurrent(parseInt(currentTime))}"]{
                   color:  #9E9E9E;
               }
-          `), React.createElement("style", {
+          `), /*#__PURE__*/React.createElement("style", {
     scope: true
   }, `.editor-wrapper-container{
                 padding: 8px 16px;
@@ -517,17 +517,17 @@ export default function SlateTranscriptEditor(props) {
               .timecode.text:hover{
                 text-decoration:none;
               }
-              `), props.showTitle ? React.createElement(OverlayTrigger, {
+              `), props.showTitle ? /*#__PURE__*/React.createElement(OverlayTrigger, {
     delay: TOOTLIP_LONGER_DELAY,
     placement: 'bottom',
-    overlay: React.createElement(Tooltip, {
+    overlay: /*#__PURE__*/React.createElement(Tooltip, {
       id: "tooltip-disabled"
     }, " ", props.title)
-  }, React.createElement("h3", {
+  }, /*#__PURE__*/React.createElement("h3", {
     className: 'text-truncate text-left'
-  }, React.createElement("small", {
+  }, /*#__PURE__*/React.createElement("small", {
     className: "text-muted"
-  }, props.title))) : null, React.createElement(Row, null, React.createElement(Col, {
+  }, props.title))) : null, /*#__PURE__*/React.createElement(Row, null, /*#__PURE__*/React.createElement(Col, {
     xs: {
       span: 12,
       order: 1
@@ -548,89 +548,89 @@ export default function SlateTranscriptEditor(props) {
       span: 8,
       offset: 2
     } : 3
-  }, React.createElement(Row, null, React.createElement("video", {
+  }, /*#__PURE__*/React.createElement(Row, null, /*#__PURE__*/React.createElement("video", {
     ref: mediaRef,
     src: props.mediaUrl,
     width: '100%',
     height: getMediaType() === 'audio' ? '60em' : 'auto',
     controls: true,
     playsInline: true
-  })), React.createElement(Row, null, React.createElement(Col, {
+  })), /*#__PURE__*/React.createElement(Row, null, /*#__PURE__*/React.createElement(Col, {
     xs: 5,
     sm: 4,
     md: 4,
     lg: 4,
     xl: 4,
     className: 'p-1 mx-auto'
-  }, React.createElement(Badge, {
+  }, /*#__PURE__*/React.createElement(Badge, {
     variant: "light",
     pill: true
-  }, React.createElement("code", {
+  }, /*#__PURE__*/React.createElement("code", {
     className: 'text-muted'
-  }, shortTimecode(currentTime)), React.createElement("code", {
+  }, shortTimecode(currentTime)), /*#__PURE__*/React.createElement("code", {
     className: 'text-muted'
-  }, duration ? ` | ${shortTimecode(duration)}` : ''))), React.createElement(Col, {
+  }, duration ? ` | ${shortTimecode(duration)}` : ''))), /*#__PURE__*/React.createElement(Col, {
     xs: 4,
     sm: 4,
     md: 4,
     lg: 4,
     xl: 4,
     className: 'p-1 mx-auto'
-  }, React.createElement(Form.Control, {
+  }, /*#__PURE__*/React.createElement(Form.Control, {
     as: "select",
     defaultValue: playbackRate,
     onChange: handleSetPlaybackRate,
     title: 'Change the playback speed of the player'
   }, PLAYBACK_RATE_VALUES.map((playbackRateValue, index) => {
-    return React.createElement("option", {
+    return /*#__PURE__*/React.createElement("option", {
       key: index + playbackRateValue,
       value: playbackRateValue
     }, "x ", playbackRateValue);
-  }))), React.createElement(Col, {
+  }))), /*#__PURE__*/React.createElement(Col, {
     xs: 3,
     sm: 3,
     md: 3,
     lg: 3,
     xl: 3,
     className: 'p-1 mx-auto'
-  }, React.createElement(OverlayTrigger, {
+  }, /*#__PURE__*/React.createElement(OverlayTrigger, {
     delay: TOOTLIP_DELAY,
     placement: 'bottom',
-    overlay: React.createElement(Tooltip, {
+    overlay: /*#__PURE__*/React.createElement(Tooltip, {
       id: "tooltip-disabled"
     }, `Seek back by ${SEEK_BACK_SEC} seconds`)
-  }, React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", {
     className: "d-inline-block"
-  }, React.createElement(Button, {
+  }, /*#__PURE__*/React.createElement(Button, {
     variant: "light",
     onClick: handleSeekBack,
     block: true
-  }, SEEK_BACK_SEC, " ", React.createElement(FontAwesomeIcon, {
+  }, SEEK_BACK_SEC, " ", /*#__PURE__*/React.createElement(FontAwesomeIcon, {
     icon: faUndo
-  })))))), React.createElement(Row, null, React.createElement(Col, {
+  })))))), /*#__PURE__*/React.createElement(Row, null, /*#__PURE__*/React.createElement(Col, {
     xs: 12,
     sm: 12,
     md: 12,
     lg: 12,
     xl: 12,
     className: 'p-1 mx-auto'
-  }, React.createElement(Accordion, {
+  }, /*#__PURE__*/React.createElement(Accordion, {
     onClick: handleSetShowSpeakersCheatShet
-  }, React.createElement(Accordion.Toggle, {
+  }, /*#__PURE__*/React.createElement(Accordion.Toggle, {
     as: Button,
     variant: "link",
     eventKey: "0"
-  }, React.createElement(Badge, {
+  }, /*#__PURE__*/React.createElement(Badge, {
     variant: "light"
-  }, "Speakers")), React.createElement(Accordion.Collapse, {
+  }, "Speakers")), /*#__PURE__*/React.createElement(Accordion.Collapse, {
     eventKey: "0"
-  }, React.createElement(ListGroup, null, speakerOptions.map((speakerName, index) => {
-    return React.createElement(ListGroup.Item, {
+  }, /*#__PURE__*/React.createElement(ListGroup, null, speakerOptions.map((speakerName, index) => {
+    return /*#__PURE__*/React.createElement(ListGroup.Item, {
       key: index + speakerName,
       className: 'text-truncate',
       title: speakerName.toUpperCase()
     }, speakerName.toUpperCase());
-  }))))))), React.createElement(Col, {
+  }))))))), /*#__PURE__*/React.createElement(Col, {
     xs: {
       span: 12,
       order: 3
@@ -667,9 +667,9 @@ export default function SlateTranscriptEditor(props) {
       span: 7,
       order: 2
     }
-  }, value.length !== 0 ? /*#__PURE__*/React.createElement(React.Fragment, null, React.createElement("section", {
+  }, value.length !== 0 ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("section", {
     className: "editor-wrapper-container"
-  }, React.createElement(Slate, {
+  }, /*#__PURE__*/React.createElement(Slate, {
     editor: editor,
     value: value,
     onChange: value => {
@@ -679,7 +679,7 @@ export default function SlateTranscriptEditor(props) {
 
       return setValue(value);
     }
-  }, React.createElement(Editable, {
+  }, /*#__PURE__*/React.createElement(Editable, {
     readOnly: typeof props.isEditable === 'boolean' ? !props.isEditable : false,
     renderElement: renderElement,
     renderLeaf: renderLeaf,
@@ -709,11 +709,11 @@ export default function SlateTranscriptEditor(props) {
         setSaveTimer(tmpSaveTimer);
       }
     }
-  })))) : React.createElement("section", {
+  })))) : /*#__PURE__*/React.createElement("section", {
     className: "text-center"
-  }, React.createElement("i", {
+  }, /*#__PURE__*/React.createElement("i", {
     className: "text-center"
-  }, "Loading..."))), React.createElement(Col, {
+  }, "Loading..."))), /*#__PURE__*/React.createElement(Col, {
     xs: {
       span: 12,
       order: 2
@@ -734,29 +734,29 @@ export default function SlateTranscriptEditor(props) {
       span: 2,
       order: 3
     }
-  }, React.createElement(Row, null, React.createElement(Col, {
+  }, /*#__PURE__*/React.createElement(Row, null, /*#__PURE__*/React.createElement(Col, {
     xs: 2,
     sm: 12,
     md: 12,
     lg: 12,
     xl: 12,
     className: 'p-1 mx-auto'
-  }, React.createElement(OverlayTrigger, {
+  }, /*#__PURE__*/React.createElement(OverlayTrigger, {
     OverlayTrigger: true,
     delay: TOOTLIP_LONGER_DELAY,
     placement: 'bottom',
-    overlay: React.createElement(Tooltip, {
+    overlay: /*#__PURE__*/React.createElement(Tooltip, {
       id: "tooltip-disabled"
     }, "Export options")
-  }, React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", {
     className: "d-inline-block"
-  }, React.createElement(DropdownButton, {
+  }, /*#__PURE__*/React.createElement(DropdownButton, {
     id: "dropdown-basic-button",
-    title: React.createElement(FontAwesomeIcon, {
+    title: /*#__PURE__*/React.createElement(FontAwesomeIcon, {
       icon: faShare
     }),
     variant: "light"
-  }, React.createElement(Dropdown.Item, {
+  }, /*#__PURE__*/React.createElement(Dropdown.Item, {
     onClick: () => {
       handleExport({
         type: 'text',
@@ -765,7 +765,7 @@ export default function SlateTranscriptEditor(props) {
         timecodes: false
       });
     }
-  }, "Text (", React.createElement("code", null, ".txt"), ")"), React.createElement(Dropdown.Item, {
+  }, "Text (", /*#__PURE__*/React.createElement("code", null, ".txt"), ")"), /*#__PURE__*/React.createElement(Dropdown.Item, {
     onClick: () => {
       handleExport({
         type: 'text',
@@ -774,7 +774,7 @@ export default function SlateTranscriptEditor(props) {
         timecodes: false
       });
     }
-  }, "Text (Speakers)"), React.createElement(Dropdown.Item, {
+  }, "Text (Speakers)"), /*#__PURE__*/React.createElement(Dropdown.Item, {
     onClick: () => {
       handleExport({
         type: 'text',
@@ -783,7 +783,7 @@ export default function SlateTranscriptEditor(props) {
         timecodes: true
       });
     }
-  }, "Text (Timecodes)"), React.createElement(Dropdown.Item, {
+  }, "Text (Timecodes)"), /*#__PURE__*/React.createElement(Dropdown.Item, {
     onClick: () => {
       handleExport({
         type: 'text',
@@ -793,7 +793,7 @@ export default function SlateTranscriptEditor(props) {
       });
     },
     disable: true
-  }, "Text (Speakers & Timecodes)"), React.createElement(Dropdown.Item, {
+  }, "Text (Speakers & Timecodes)"), /*#__PURE__*/React.createElement(Dropdown.Item, {
     onClick: () => {
       handleExport({
         type: 'text',
@@ -804,7 +804,7 @@ export default function SlateTranscriptEditor(props) {
       });
     },
     disable: true
-  }, "Text (Atlas format)"), React.createElement(Dropdown.Divider, null), React.createElement(Dropdown.Item, {
+  }, "Text (Atlas format)"), /*#__PURE__*/React.createElement(Dropdown.Divider, null), /*#__PURE__*/React.createElement(Dropdown.Item, {
     onClick: () => {
       handleExport({
         type: 'word',
@@ -813,7 +813,7 @@ export default function SlateTranscriptEditor(props) {
         timecodes: false
       });
     }
-  }, "Word (", React.createElement("code", null, ".docx"), ")"), React.createElement(Dropdown.Item, {
+  }, "Word (", /*#__PURE__*/React.createElement("code", null, ".docx"), ")"), /*#__PURE__*/React.createElement(Dropdown.Item, {
     onClick: () => {
       handleExport({
         type: 'word',
@@ -822,7 +822,7 @@ export default function SlateTranscriptEditor(props) {
         timecodes: false
       });
     }
-  }, "Word (Speakers)"), React.createElement(Dropdown.Item, {
+  }, "Word (Speakers)"), /*#__PURE__*/React.createElement(Dropdown.Item, {
     onClick: () => {
       handleExport({
         type: 'word',
@@ -831,7 +831,7 @@ export default function SlateTranscriptEditor(props) {
         timecodes: true
       });
     }
-  }, "Word (Timecodes)"), React.createElement(Dropdown.Item, {
+  }, "Word (Timecodes)"), /*#__PURE__*/React.createElement(Dropdown.Item, {
     onClick: () => {
       handleExport({
         type: 'word',
@@ -840,7 +840,7 @@ export default function SlateTranscriptEditor(props) {
         timecodes: true
       });
     }
-  }, "Word (Speakers & Timecodes)"), React.createElement(Dropdown.Item, {
+  }, "Word (Speakers & Timecodes)"), /*#__PURE__*/React.createElement(Dropdown.Item, {
     onClick: () => {
       handleExport({
         type: 'word',
@@ -851,7 +851,7 @@ export default function SlateTranscriptEditor(props) {
         hideTitle: true
       });
     }
-  }, "Word (OHMS)"), React.createElement(Dropdown.Divider, null), React.createElement(Dropdown.Item, {
+  }, "Word (OHMS)"), /*#__PURE__*/React.createElement(Dropdown.Divider, null), /*#__PURE__*/React.createElement(Dropdown.Item, {
     onClick: () => {
       handleExport({
         type: 'json-slate',
@@ -860,7 +860,7 @@ export default function SlateTranscriptEditor(props) {
         timecodes: true
       });
     }
-  }, "SlateJs (", React.createElement("code", null, ".json"), ")"), React.createElement(Dropdown.Item, {
+  }, "SlateJs (", /*#__PURE__*/React.createElement("code", null, ".json"), ")"), /*#__PURE__*/React.createElement(Dropdown.Item, {
     onClick: () => {
       handleExport({
         type: 'json-digitalpaperedit',
@@ -869,23 +869,23 @@ export default function SlateTranscriptEditor(props) {
         timecodes: true
       });
     }
-  }, "DPE (", React.createElement("code", null, ".json"), ")"))))), React.createElement(Col, {
+  }, "DPE (", /*#__PURE__*/React.createElement("code", null, ".json"), ")"))))), /*#__PURE__*/React.createElement(Col, {
     xs: 2,
     sm: 12,
     md: 12,
     lg: 12,
     xl: 12,
     className: 'p-1 mx-auto'
-  }, React.createElement(OverlayTrigger, {
+  }, /*#__PURE__*/React.createElement(OverlayTrigger, {
     OverlayTrigger: true,
     delay: TOOTLIP_LONGER_DELAY,
     placement: 'bottom',
-    overlay: React.createElement(Tooltip, {
+    overlay: /*#__PURE__*/React.createElement(Tooltip, {
       id: "tooltip-disabled"
     }, "Export in caption format")
-  }, React.createElement(DropdownButton, {
+  }, /*#__PURE__*/React.createElement(DropdownButton, {
     id: "dropdown-basic-button",
-    title: React.createElement(FontAwesomeIcon, {
+    title: /*#__PURE__*/React.createElement(FontAwesomeIcon, {
       icon: faClosedCaptioning
     }),
     variant: "light"
@@ -894,7 +894,7 @@ export default function SlateTranscriptEditor(props) {
     label,
     ext
   }, index) => {
-    return React.createElement(Dropdown.Item, {
+    return /*#__PURE__*/React.createElement(Dropdown.Item, {
       key: index + label,
       onClick: () => {
         handleSubtitlesExport({
@@ -902,113 +902,113 @@ export default function SlateTranscriptEditor(props) {
           ext
         });
       }
-    }, label, " (", React.createElement("code", null, ".", ext), ")");
-  })))), React.createElement(Col, {
+    }, label, " (", /*#__PURE__*/React.createElement("code", null, ".", ext), ")");
+  })))), /*#__PURE__*/React.createElement(Col, {
     xs: 2,
     sm: 12,
     md: 12,
     lg: 12,
     xl: 12,
     className: 'p-1 mx-auto'
-  }, React.createElement(OverlayTrigger, {
+  }, /*#__PURE__*/React.createElement(OverlayTrigger, {
     OverlayTrigger: true,
     delay: TOOTLIP_LONGER_DELAY,
     placement: 'bottom',
-    overlay: React.createElement(Tooltip, {
+    overlay: /*#__PURE__*/React.createElement(Tooltip, {
       id: "tooltip-disabled"
     }, "Save")
-  }, React.createElement(Button, {
+  }, /*#__PURE__*/React.createElement(Button, {
     onClick: handleSave,
     variant: "light"
-  }, React.createElement(FontAwesomeIcon, {
+  }, /*#__PURE__*/React.createElement(FontAwesomeIcon, {
     icon: faSave
-  })))), React.createElement(Col, {
+  })))), /*#__PURE__*/React.createElement(Col, {
     xs: 2,
     sm: 12,
     md: 12,
     lg: 12,
     xl: 12,
     className: 'p-1 mx-auto'
-  }, React.createElement(OverlayTrigger, {
+  }, /*#__PURE__*/React.createElement(OverlayTrigger, {
     delay: TOOTLIP_DELAY,
     placement: 'bottom',
-    overlay: React.createElement(Tooltip, {
+    overlay: /*#__PURE__*/React.createElement(Tooltip, {
       id: "tooltip-disabled"
     }, "To insert a paragraph break, and split a pargraph in two, put the cursor at a point where you'd want to add a paragraph break in the text and either click this button or hit enter key")
-  }, React.createElement(Button, {
+  }, /*#__PURE__*/React.createElement(Button, {
     onClick: breakParagraph,
     variant: "light"
-  }, "\u21B5"))), React.createElement(Col, {
+  }, "\u21B5"))), /*#__PURE__*/React.createElement(Col, {
     xs: 2,
     sm: 12,
     md: 12,
     lg: 12,
     xl: 12,
     className: 'p-1 mx-auto'
-  }, React.createElement(OverlayTrigger, {
+  }, /*#__PURE__*/React.createElement(OverlayTrigger, {
     delay: TOOTLIP_DELAY,
     placement: 'bottom',
-    overlay: React.createElement(Tooltip, {
+    overlay: /*#__PURE__*/React.createElement(Tooltip, {
       id: "tooltip-disabled"
     }, "Put the cursor at a point where you'd want to add [INAUDIBLE] text, and click this button")
-  }, React.createElement(Button, {
+  }, /*#__PURE__*/React.createElement(Button, {
     onClick: insertTextInaudible,
     variant: "light"
-  }, React.createElement(FontAwesomeIcon, {
+  }, /*#__PURE__*/React.createElement(FontAwesomeIcon, {
     icon: faMehBlank
-  })))), React.createElement(Col, {
+  })))), /*#__PURE__*/React.createElement(Col, {
     xs: 2,
     sm: 12,
     md: 12,
     lg: 12,
     xl: 12,
     className: 'p-1 mx-auto'
-  }, React.createElement(OverlayTrigger, {
+  }, /*#__PURE__*/React.createElement(OverlayTrigger, {
     delay: TOOTLIP_DELAY,
     placement: 'bottom',
-    overlay: React.createElement(Tooltip, {
+    overlay: /*#__PURE__*/React.createElement(Tooltip, {
       id: "tooltip-disabled"
     }, "Turn ", isPauseWhiletyping ? 'off' : 'on', " pause while typing functionality. As you start typing the media while pause playback until you stop. Not reccomended on longer transcript as it might present performance issues.")
-  }, React.createElement(Button, {
+  }, /*#__PURE__*/React.createElement(Button, {
     onClick: handleSetPauseWhileTyping,
     variant: isPauseWhiletyping ? 'secondary' : 'light'
-  }, React.createElement(FontAwesomeIcon, {
+  }, /*#__PURE__*/React.createElement(FontAwesomeIcon, {
     icon: faPause
-  })))), React.createElement(Col, {
+  })))), /*#__PURE__*/React.createElement(Col, {
     xs: 2,
     sm: 12,
     md: 12,
     lg: 12,
     xl: 12,
     className: 'p-1 mx-auto'
-  }, React.createElement(OverlayTrigger, {
+  }, /*#__PURE__*/React.createElement(OverlayTrigger, {
     delay: TOOTLIP_DELAY,
     placement: 'bottom',
-    overlay: React.createElement(Tooltip, {
+    overlay: /*#__PURE__*/React.createElement(Tooltip, {
       id: "tooltip-disabled"
     }, "Restore timecodes. At the moment for transcript over 1hour it could temporarily freeze the UI for a few seconds")
-  }, React.createElement(Button, {
+  }, /*#__PURE__*/React.createElement(Button, {
     onClick: handleRestoreTimecodes,
     variant: "light"
-  }, React.createElement(FontAwesomeIcon, {
+  }, /*#__PURE__*/React.createElement(FontAwesomeIcon, {
     icon: faSync
-  })))), React.createElement(Col, {
+  })))), /*#__PURE__*/React.createElement(Col, {
     xs: 2,
     sm: 12,
     md: 12,
     lg: 12,
     xl: 12,
     className: 'p-1 mx-auto'
-  }, React.createElement(OverlayTrigger, {
+  }, /*#__PURE__*/React.createElement(OverlayTrigger, {
     placement: 'bottom',
-    overlay: React.createElement(Tooltip, {
+    overlay: /*#__PURE__*/React.createElement(Tooltip, {
       id: "tooltip-disabled"
     }, "Double click on a paragraph to jump to the corresponding point at the beginning of that paragraph in the media")
-  }, React.createElement(Button, {
+  }, /*#__PURE__*/React.createElement(Button, {
     variant: "light"
-  }, React.createElement(FontAwesomeIcon, {
+  }, /*#__PURE__*/React.createElement(FontAwesomeIcon, {
     icon: faInfoCircle
-  }))))), React.createElement("br", null))));
+  }))))), /*#__PURE__*/React.createElement("br", null))));
 }
 SlateTranscriptEditor.propTypes = {
   transcriptData: PropTypes.object.isRequired,
