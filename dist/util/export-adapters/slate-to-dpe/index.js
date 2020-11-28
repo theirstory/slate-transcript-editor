@@ -42,12 +42,7 @@ const prepSlateParagraphForAlignement = slateData => {
   return result;
 };
 
-const converSlateToDpe = (data, sttJson) => {
-  const linesWithSpeaker = prepSlateParagraphForAlignement(data);
-  console.log('linesWithSpeaker', linesWithSpeaker);
-  console.log('sttJson', sttJson);
-  const res = alignDiraizedText(linesWithSpeaker, sttJson);
-  console.log('res', res);
+const convertSlateToDpePostAlignment = res => {
   const words = res.map(paragraph => {
     if (paragraph) {
       return paragraph.words;
@@ -73,4 +68,30 @@ const converSlateToDpe = (data, sttJson) => {
   }; //    return {words, paragraphs};
 };
 
+const converSlateToDpe = (data, sttJson) => {
+  const linesWithSpeaker = prepSlateParagraphForAlignement(data);
+  console.log('linesWithSpeaker', linesWithSpeaker);
+  console.log('sttJson', sttJson);
+  const res = alignDiraizedText(linesWithSpeaker, sttJson);
+  console.log('res', res);
+  return convertSlateToDpePostAlignment(res);
+};
+
+export const convertSlateToDpeAsync = async (data, sttJson) => {
+  const linesWithSpeaker = prepSlateParagraphForAlignement(data);
+  console.log('linesWithSpeaker', linesWithSpeaker);
+  console.log('sttJson', sttJson);
+  const worker = new Worker('./align_worker.js', {
+    type: 'module'
+  });
+  const returnPromise = new Promise((res, rej) => {
+    worker.onmessage = event => {
+      console.log('worker response', event.data);
+      const postProcessed = convertSlateToDpePostAlignment(event.data);
+      res(postProcessed);
+    };
+  });
+  worker.postMessage([linesWithSpeaker, sttJson]);
+  return returnPromise;
+};
 export default converSlateToDpe;

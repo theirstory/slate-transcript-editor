@@ -26,7 +26,7 @@ import { shortTimecode } from '../util/timecode-converter';
 import slateToText from '../util/export-adapters/txt';
 import download from '../util/downlaod/index.js';
 import convertDpeToSlate from '../util/dpe-to-slate';
-import converSlateToDpe from '../util/export-adapters/slate-to-dpe/index.js';
+import converSlateToDpe, { convertSlateToDpeAsync } from '../util/export-adapters/slate-to-dpe/index.js';
 import slateToDocx from '../util/export-adapters/docx';
 import restoreTimecodes from '../util/restore-timcodes';
 import insertTimecodesInline from '../util/inline-interval-timecodes';
@@ -59,6 +59,14 @@ export default function SlateTranscriptEditor(props) {
   const [showSpeakersCheatShet, setShowSpeakersCheatShet] = useState(false);
   const [saveTimer, setSaveTimer] = useState(null);
   const [isPauseWhiletyping, setIsPauseWhiletyping] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  useEffect(() => {
+    if (isProcessing) {
+      document.body.style.cursor = 'wait';
+    } else {
+      document.body.style.cursor = 'default';
+    }
+  }, [isProcessing]);
   useEffect(() => {
     if (props.transcriptData) {
       const res = convertDpeToSlate(props.transcriptData);
@@ -288,7 +296,7 @@ export default function SlateTranscriptEditor(props) {
     }
   };
 
-  const getEditorContent = ({
+  const getEditorContent = async ({
     type,
     speakers,
     timecodes,
@@ -301,7 +309,7 @@ export default function SlateTranscriptEditor(props) {
         let tmpValue = value;
 
         if (timecodes || inline) {
-          tmpValue = handleRestoreTimecodes(inline);
+          tmpValue = await handleRestoreTimecodes(inline);
         }
 
         return slateToText({
@@ -315,13 +323,13 @@ export default function SlateTranscriptEditor(props) {
         return value;
 
       case 'json-digitalpaperedit':
-        return converSlateToDpe(value, props.transcriptData);
+        return convertSlateToDpeAsync(value, props.transcriptData);
 
       case 'word':
         let docTmpValue = value;
 
         if (timecodes || inline) {
-          docTmpValue = handleRestoreTimecodes(inline);
+          docTmpValue = await handleRestoreTimecodes(inline);
         }
 
         return slateToDocx({
@@ -347,7 +355,7 @@ export default function SlateTranscriptEditor(props) {
     return path.basename(props.mediaUrl).trim();
   };
 
-  const handleExport = ({
+  const handleExport = async ({
     type,
     ext,
     speakers,
@@ -356,48 +364,58 @@ export default function SlateTranscriptEditor(props) {
     hideTitle,
     atlasFormat
   }) => {
-    let editorContnet = getEditorContent({
-      type,
-      speakers,
-      inline_timecodes,
-      timecodes,
-      hideTitle,
-      atlasFormat
-    });
+    try {
+      setIsProcessing(true);
+      let editorContnet = await getEditorContent({
+        type,
+        speakers,
+        inline_timecodes,
+        timecodes,
+        hideTitle,
+        atlasFormat
+      });
 
-    if (ext === 'json') {
-      editorContnet = JSON.stringify(editorContnet, null, 2);
-    }
+      if (ext === 'json') {
+        editorContnet = JSON.stringify(editorContnet, null, 2);
+      }
 
-    if (ext !== 'docx') {
-      download(editorContnet, `${getFileTitle()}.${ext}`);
-    }
-  };
-
-  const handleSave = () => {
-    const format = props.autoSaveContentType ? props.autoSaveContentType : 'digitalpaperedit';
-    const editorContnet = getEditorContent({
-      type: `json-${format}`
-    });
-
-    if (props.handleSaveEditor) {
-      props.handleSaveEditor(editorContnet);
+      if (ext !== 'docx') {
+        download(editorContnet, `${getFileTitle()}.${ext}`);
+      }
+    } finally {
+      setIsProcessing(false);
     }
   };
 
-  const handleRestoreTimecodes = (inline_timecodes = false) => {
+  const handleSave = async () => {
+    try {
+      setIsProcessing(true);
+      const format = props.autoSaveContentType ? props.autoSaveContentType : 'digitalpaperedit';
+      const editorContnet = await getEditorContent({
+        type: `json-${format}`
+      });
+
+      if (props.handleSaveEditor) {
+        props.handleSaveEditor(editorContnet);
+      }
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleRestoreTimecodes = async (inline_timecodes = false) => {
     if (inline_timecodes) {
       let transcriptData = insertTimecodesInline({
         transcriptData: props.transcriptData
       });
-      const ret = restoreTimecodes({
+      const ret = await restoreTimecodes({
         transcriptData,
         slateValue: convertDpeToSlate(transcriptData)
       });
       handleRestoreTimecodes(false);
       return ret;
     } else {
-      const alignedSlateData = restoreTimecodes({
+      const alignedSlateData = await restoreTimecodes({
         slateValue: value,
         transcriptData: props.transcriptData
       });
@@ -442,26 +460,31 @@ export default function SlateTranscriptEditor(props) {
     setIsPauseWhiletyping(!isPauseWhiletyping);
   };
 
-  const handleSubtitlesExport = ({
+  const handleSubtitlesExport = async ({
     type,
     ext
   }) => {
-    let editorContent = getEditorContent({
-      type: 'json-digitalpaperedit',
-      speakers: true,
-      timecodes: true
-    });
-    let subtitlesJson = subtitlesGenerator({
-      words: editorContent.words,
-      paragraphs: editorContent.paragraphs,
-      type
-    });
+    try {
+      setIsProcessing(true);
+      let editorContent = await getEditorContent({
+        type: 'json-digitalpaperedit',
+        speakers: true,
+        timecodes: true
+      });
+      let subtitlesJson = subtitlesGenerator({
+        words: editorContent.words,
+        paragraphs: editorContent.paragraphs,
+        type
+      });
 
-    if (type === 'json') {
-      subtitlesJson = JSON.stringify(subtitlesJson, null, 2);
+      if (type === 'json') {
+        subtitlesJson = JSON.stringify(subtitlesJson, null, 2);
+      }
+
+      download(subtitlesJson, `${getFileTitle()}.${ext}`);
+    } finally {
+      setIsProcessing(false);
     }
-
-    download(subtitlesJson, `${getFileTitle()}.${ext}`);
   };
 
   const getMediaType = () => {
@@ -751,6 +774,7 @@ export default function SlateTranscriptEditor(props) {
   }, /*#__PURE__*/React.createElement("span", {
     className: "d-inline-block"
   }, /*#__PURE__*/React.createElement(DropdownButton, {
+    disabled: isProcessing,
     id: "dropdown-basic-button",
     title: /*#__PURE__*/React.createElement(FontAwesomeIcon, {
       icon: faShare
@@ -884,6 +908,7 @@ export default function SlateTranscriptEditor(props) {
       id: "tooltip-disabled"
     }, "Export in caption format")
   }, /*#__PURE__*/React.createElement(DropdownButton, {
+    disabled: isProcessing,
     id: "dropdown-basic-button",
     title: /*#__PURE__*/React.createElement(FontAwesomeIcon, {
       icon: faClosedCaptioning
@@ -918,6 +943,7 @@ export default function SlateTranscriptEditor(props) {
       id: "tooltip-disabled"
     }, "Save")
   }, /*#__PURE__*/React.createElement(Button, {
+    disabled: isProcessing,
     onClick: handleSave,
     variant: "light"
   }, /*#__PURE__*/React.createElement(FontAwesomeIcon, {
@@ -936,6 +962,7 @@ export default function SlateTranscriptEditor(props) {
       id: "tooltip-disabled"
     }, "To insert a paragraph break, and split a pargraph in two, put the cursor at a point where you'd want to add a paragraph break in the text and either click this button or hit enter key")
   }, /*#__PURE__*/React.createElement(Button, {
+    disabled: isProcessing,
     onClick: breakParagraph,
     variant: "light"
   }, "\u21B5"))), /*#__PURE__*/React.createElement(Col, {
@@ -952,6 +979,7 @@ export default function SlateTranscriptEditor(props) {
       id: "tooltip-disabled"
     }, "Put the cursor at a point where you'd want to add [INAUDIBLE] text, and click this button")
   }, /*#__PURE__*/React.createElement(Button, {
+    disabled: isProcessing,
     onClick: insertTextInaudible,
     variant: "light"
   }, /*#__PURE__*/React.createElement(FontAwesomeIcon, {
@@ -970,6 +998,7 @@ export default function SlateTranscriptEditor(props) {
       id: "tooltip-disabled"
     }, "Turn ", isPauseWhiletyping ? 'off' : 'on', " pause while typing functionality. As you start typing the media while pause playback until you stop. Not reccomended on longer transcript as it might present performance issues.")
   }, /*#__PURE__*/React.createElement(Button, {
+    disabled: isProcessing,
     onClick: handleSetPauseWhileTyping,
     variant: isPauseWhiletyping ? 'secondary' : 'light'
   }, /*#__PURE__*/React.createElement(FontAwesomeIcon, {
@@ -988,7 +1017,15 @@ export default function SlateTranscriptEditor(props) {
       id: "tooltip-disabled"
     }, "Restore timecodes. At the moment for transcript over 1hour it could temporarily freeze the UI for a few seconds")
   }, /*#__PURE__*/React.createElement(Button, {
-    onClick: handleRestoreTimecodes,
+    disabled: isProcessing,
+    onClick: async () => {
+      try {
+        setIsProcessing(true);
+        await handleRestoreTimecodes();
+      } finally {
+        setIsProcessing(false);
+      }
+    },
     variant: "light"
   }, /*#__PURE__*/React.createElement(FontAwesomeIcon, {
     icon: faSync
@@ -1005,6 +1042,7 @@ export default function SlateTranscriptEditor(props) {
       id: "tooltip-disabled"
     }, "Double click on a paragraph to jump to the corresponding point at the beginning of that paragraph in the media")
   }, /*#__PURE__*/React.createElement(Button, {
+    disabled: isProcessing,
     variant: "light"
   }, /*#__PURE__*/React.createElement(FontAwesomeIcon, {
     icon: faInfoCircle
