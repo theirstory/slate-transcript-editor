@@ -75,15 +75,22 @@ const converSlateToDpe = (data, sttJson) => {
 };
 
 export const convertSlateToDpeAsync = async (data, sttJson) => {
-  // const linesWithSpeaker = prepSlateParagraphForAlignement(data);
-  // const worker = new Worker('./align_worker.js', { type: 'module' });
+  const linesWithSpeaker = prepSlateParagraphForAlignement(data);
+  console.log('linesWithSpeaker', linesWithSpeaker);
+  console.log('sttJson', sttJson);
 
-  return new Promise((response, reject) => {
-    const linesWithSpeaker = prepSlateParagraphForAlignement(data);
-    const res = alignDiraizedText(linesWithSpeaker, sttJson);
-    const responseData = convertSlateToDpePostAlignment(res);
-    response(responseData);
+  const worker = new Worker('./align_worker.js', { type: 'module' });
+
+  const returnPromise = new Promise((res, rej) => {
+    worker.onmessage = (event) => {
+      console.log('worker response', event.data);
+      const postProcessed = convertSlateToDpePostAlignment(event.data);
+      res(postProcessed);
+    };
   });
+
+  worker.postMessage([linesWithSpeaker, sttJson]);
+  return returnPromise;
 };
 
 export default converSlateToDpe;
